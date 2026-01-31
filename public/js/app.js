@@ -184,8 +184,8 @@ function initChart() {
 
     // Gradient
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.5)'); // Indigo
-    gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
+    gradient.addColorStop(0, 'rgba(212, 175, 55, 0.4)'); // Gold
+    gradient.addColorStop(1, 'rgba(212, 175, 55, 0.0)');
 
     AppState.chartInstance = new Chart(ctx, {
         type: 'line',
@@ -194,15 +194,15 @@ function initChart() {
             datasets: [{
                 label: 'Campaign Engagement',
                 data: [12, 19, 15, 25, 22, 30, 45],
-                borderColor: '#6366f1',
+                borderColor: '#d4af37',
                 backgroundColor: gradient,
-                borderWidth: 3,
+                borderWidth: 2,
                 fill: true,
-                tension: 0.4, // Smooth curves
-                pointBackgroundColor: '#ec4899',
-                pointBorderColor: '#fff',
-                pointRadius: 6,
-                pointHoverRadius: 8
+                tension: 0.4,
+                pointBackgroundColor: '#d4af37',
+                pointBorderColor: '#05070a',
+                pointRadius: 4,
+                pointHoverRadius: 6
             }]
         },
         options: {
