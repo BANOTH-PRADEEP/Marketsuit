@@ -58,9 +58,10 @@ body {
   line-height: 1.6;
   height: 100vh;
   overflow: hidden;
-  background-image:
-    radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 90% 90%, rgba(212, 175, 55, 0.03) 0%, transparent 40%);
+  background-image: linear-gradient(rgba(5, 7, 10, 0.8), rgba(5, 7, 10, 0.8)), url('../assets/images/luxury_ai_background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 h1,
@@ -321,7 +322,8 @@ select {
 
 /* Cards */
 .card {
-  background: var(--bg-card);
+  background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('../assets/images/executive_texture.png');
+  background-size: cover;
   backdrop-filter: blur(12px);
   border: var(--glass-border);
   border-radius: var(--radius-xl);
@@ -334,22 +336,34 @@ select {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  padding: 3rem;
+  background: linear-gradient(rgba(5, 7, 10, 0.4), rgba(5, 7, 10, 0.6)), url('../assets/images/marketing_hero_visual.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 4rem;
   border-radius: var(--radius-xl);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   position: relative;
   overflow: hidden;
 }
 
+.hero-text {
+  z-index: 2;
+}
+
 .hero-text h2 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   background: linear-gradient(to right, #ffffff, #d4af37);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.hero-visual {
+  display: none;
+  /* Hide floating orbs, using background image instead */
 }
 
 .hero-text p {
