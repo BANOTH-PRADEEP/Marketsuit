@@ -6,6 +6,21 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Diagnostics
+if (process.env.GROQ_API_KEY) {
+    console.log("✅ Groq API Key found and loaded.");
+} else {
+    console.warn("⚠️ WARNING: GROQ_API_KEY is missing from environment!");
+}
+
+app.get('/api/debug-env', (req, res) => {
+    res.json({
+        canSeeKey: !!process.env.GROQ_API_KEY,
+        keyLength: process.env.GROQ_API_KEY ? process.env.GROQ_API_KEY.length : 0,
+        port: PORT
+    });
+});
+
 // Middleware
 app.use(cors());
 app.use(express.json());
