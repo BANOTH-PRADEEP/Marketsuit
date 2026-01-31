@@ -21,11 +21,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Setup Listeners
     setupFormListeners();
     setupModalListeners();
+    setupChartFilter();
 
     // 3. Initial Load
+    const user = JSON.parse(localStorage.getItem('marketai_user'));
+    if (user) {
+        document.querySelectorAll('.user-info .name').forEach(el => el.innerText = user.name);
+        document.querySelectorAll('.avatar').forEach(el => el.innerText = user.name[0].toUpperCase());
+    }
+
     loadLeads();
     initChart();
 });
+
+function logout() {
+    localStorage.removeItem('marketai_user');
+    window.location.href = 'login.html';
+}
+
+function setupChartFilter() {
+    const filter = document.getElementById('chart-filter');
+    if (filter) {
+        filter.addEventListener('change', (e) => {
+            updateChart(e.target.value);
+        });
+    }
+}
+
+function updateChart(days) {
+    if (!AppState.chartInstance) return;
+
+    let labels, data;
+    if (days === '30') {
+        labels = Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`);
+        data = Array.from({ length: 30 }, () => Math.floor(Math.random() * 40) + 10);
+    } else {
+        labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        data = [12, 19, 15, 25, 22, 30, 45];
+    }
+
+    AppState.chartInstance.data.labels = labels;
+    AppState.chartInstance.data.datasets[0].data = data;
+    AppState.chartInstance.update();
+}
 
 function navigateTo(viewId) {
     document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));

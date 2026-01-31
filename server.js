@@ -28,19 +28,47 @@ app.use(express.static('public')); // Serve frontend files
 
 const fs = require('fs');
 const DATA_FILE = path.join(__dirname, 'data', 'leads.json');
+const USERS_FILE = path.join(__dirname, 'data', 'users.json');
 
-// Helper: Read Leads
-function readLeads() {
-    if (!fs.existsSync(DATA_FILE)) return [];
-    return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+// Helper: Read/Write Files
+function readFile(file) {
+    if (!fs.existsSync(file)) return [];
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-// Helper: Write Leads
-function saveLeads(leads) {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(leads, null, 2));
+function writeFile(file, data) {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
+
+// Helper: Read/Write Leads (Legacy wrappers)
+function readLeads() { return readFile(DATA_FILE); }
+function saveLeads(leads) { writeFile(DATA_FILE, leads); }
 
 // --- API Routes ---
+
+// 0. Authentication
+app.post('/api/auth/signup', (req, res) => {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) return res.status(400).json({ error: "All fields are required" });
+
+    const users = readFile(USERS_FILE);
+    if (users.find(u => u.email === email)) return res.status(400).json({ error: "User already exists" });
+
+    const newUser = { name, email, password }; // In production/real use, use bcrypt!
+    users.push(newUser);
+    writeFile(USERS_FILE, users);
+
+    res.json({ message: "Account created successfully", user: { name, email } });
+});
+
+app.post('/api/auth/login', (req, res) => {
+    const { email, password } = req.body;
+    const users = readFile(USERS_FILE);
+    const user = users.find(u => u.email === email && u.password === password);
+
+    if (!user) return res.status(401).json({ error: "Invalid email or password" });
+    res.json({ message: "Login successful", user: { name: user.name, email: user.email } });
+});
 
 // 1. Generate Text (Proxy to Groq)
 app.post('/api/generate', async (req, res) => {
